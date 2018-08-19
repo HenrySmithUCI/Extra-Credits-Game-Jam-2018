@@ -8,7 +8,6 @@ def Main():
     targetFPS = 60
 
     pygame.init()
-    pygame.font.init()
     
     screen = pygame.display.set_mode(View.WindowSize) #make window
 
@@ -18,7 +17,7 @@ def Main():
     try: #in case of error, close app
         
         Model.Initialize()
-        View.Initialize()
+        View.Initialize(screen)
     
         while running: #main loop
         
@@ -30,11 +29,13 @@ def Main():
             #mainly gets key presses but can also be mouse position if necessary
 
             Model.player.controller.PlayerInput(inputState)
+
+            deltaTime = clock.get_time()/1000
             
-            Model.Model(clock.get_time()/1000) #updates game logic
+            Model.Model(deltaTime) #updates game logic
             #passes in the new input and time since last frame in seconds
 
-            View.View(screen, str(round(clock.get_fps()))) #update visuals
+            View.View(screen, deltaTime) #update visuals
         
             clock.tick(targetFPS) #wait for next frame
             
